@@ -1,11 +1,13 @@
 import { Post } from "../types";
-7;
+
 interface AddPostProps {
   (post: FormData): Promise<Post | null>;
 }
+
 interface GetPostsProps {
   (): Promise<Post[]>;
 }
+
 interface GetPostByIdProps {
   (id: number): Promise<Post | null>;
 }
@@ -13,7 +15,6 @@ interface GetPostByIdProps {
 interface EditPostProps {
   (id: number, post: FormData): Promise<boolean>;
 }
-
 
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -55,7 +56,7 @@ export const getPostById: GetPostByIdProps = async (id) => {
   } catch (e) {
     console.error(e);
   }
-  
+
   return post;
 };
 
@@ -81,8 +82,8 @@ export const editPost: EditPostProps = async (id, postData) => {
 
   try {
     const response = await fetch(`${BACKEND_URL}/post/${id}`, {
-      method: 'PUT',
-      body: postData
+      method: "PUT",
+      body: postData,
     });
 
     if (response.ok && response.status === 200) {
@@ -93,4 +94,4 @@ export const editPost: EditPostProps = async (id, postData) => {
   }
 
   return result;
-}
+};
