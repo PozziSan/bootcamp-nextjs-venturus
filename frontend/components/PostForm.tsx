@@ -6,14 +6,16 @@ import {
   Stack,
   Textarea,
 } from "@chakra-ui/react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { Post } from "../types";
 
 interface PostFormProps {
+  post?: Post;
   postHandler: (formData: FormData) => void;
 }
 
 const PostForm = (props: PostFormProps) => {
-  const { postHandler } = props;
+  const { post, postHandler } = props;
 
   const [titleState, setTitleState] = useState("");
   const [contentState, setContentState] = useState("");
@@ -33,6 +35,13 @@ const PostForm = (props: PostFormProps) => {
 
     postHandler(formData);
   };
+
+  useEffect(() => {
+    if (post) {
+      setTitleState(post.title);
+      setContentState(post.content);
+    }
+  }, [post]);
 
   return (
     <form encType="multipart/form-data" onSubmit={submitHandler}>
@@ -57,7 +66,7 @@ const PostForm = (props: PostFormProps) => {
             type={"file"}
             placeholder={"Picture"}
             size={"lg"}
-            isRequired
+            isRequired={!post}
             data-testid="post-form-picture"
             onChange={(event) =>
               setPictureState(event.target.files ? event.target.files[0] : null)
